@@ -36,6 +36,7 @@ dependencies:
   flutter_native_timezone:
   google_fonts:
   date_picker_timeline:
+  sqflite:
 
 
   # The following adds the Cupertino Icons font to your application.

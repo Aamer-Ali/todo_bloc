@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_bloc/helper/database_helper/db_helper.dart';
+import 'package:todo_bloc/model/task.dart';
 import 'package:todo_bloc/providers/theme_providers.dart';
 import 'package:todo_bloc/widgets/my_app_bar.dart';
 import 'package:todo_bloc/widgets/my_button.dart';
@@ -139,17 +141,21 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  _validateFormData() {
+  _validateFormData() async {
     if (_titleTextController.text.isNotEmpty &&
         _noteTextController.text.isNotEmpty) {
-      //Save Data and Back
-      // print(_titleTextController.text);
-      // print(_noteTextController.text);
-      // print(DateFormat.yMd().format(_selectedDate));
-      // print(_startTime);
-      // print(_endTime);
-      // print(_selectedReminder);
-      print(_selectedColor);
+      int val = await DBHelper.insert(Task(
+          title: _titleTextController.text,
+          note: _noteTextController.text,
+          isCompleted: 0,
+          date: DateFormat.yMd().format(_selectedDate),
+          startTime: _startTime,
+          endTime: _endTime,
+          color: _selectedColor,
+          reminder: _selectedReminder,
+          repeat: _selectedRepeat));
+      print("Task Added to $val");
+      Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("All fields are required"),
@@ -269,13 +275,5 @@ class _AddTaskPageState extends State<AddTaskPage> {
         _endTime = _pickedTime.format(context);
       }
     }
-
-    // if (_pickedDate != null) {
-    //   setState(() {
-    //     _selectedDate = _pickedDate;
-    //   });
-    // } else {
-    //   print("No Date selected");
-    // }
   }
 }

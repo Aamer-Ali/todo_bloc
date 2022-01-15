@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_bloc/helper/database_helper/db_helper.dart';
 import 'package:todo_bloc/pages/home/home_page.dart';
 import 'package:todo_bloc/providers/theme_providers.dart';
 import 'package:todo_bloc/routers/app_router.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DBHelper.initDb();
   runApp(MyApp());
 }
 
