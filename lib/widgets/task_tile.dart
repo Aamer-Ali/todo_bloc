@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todo_bloc/model/task.dart';
 import 'package:todo_bloc/providers/theme_providers.dart';
 
 class TaskTile extends StatelessWidget {
-  final String title;
-  final String description;
-  final String startTime;
-  final String endTime;
+  final Task task;
 
   const TaskTile(
       {Key? key,
-      required this.title,
-      required this.description,
-      required this.startTime,
-      required this.endTime})
+      required this.task})
       : super(key: key);
 
   @override
@@ -21,7 +16,7 @@ class TaskTile extends StatelessWidget {
     final _pageHeight = MediaQuery.of(context).size.height;
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      color: Colors.blue,
+      color: task.color == 1 ? Colors.blue : task.color == 2 ? Colors.pink : Colors.yellow,
       elevation: 10,
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Container(
@@ -35,7 +30,7 @@ class TaskTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hi",
+                    task.title.toString(),
                     style: titleStyle,
                   ),
                   const SizedBox(
@@ -47,15 +42,15 @@ class TaskTile extends StatelessWidget {
                       const SizedBox(
                         width: 10,
                       ),
-                      Text("9:434 PM - "),
-                      Text("9:434 PM")
+                      Text("${task.startTime.toString()} - "),
+                      Text("${task.endTime.toString()}")
                     ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   Text(
-                    "Description",
+                   task.note.toString() ,
                     style: titleStyle,
                   ),
                 ],

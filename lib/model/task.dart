@@ -1,4 +1,6 @@
-class Task {
+import 'package:equatable/equatable.dart';
+
+class Task extends Equatable {
   int? id;
   String? title;
   String? note;
@@ -49,4 +51,18 @@ class Task {
     reminder = json['reminder'];
     repeat = json['repeat'];
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        note,
+        isCompleted,
+        date,
+        startTime,
+        endTime,
+        color,
+        reminder,
+        repeat
+      ];
 }

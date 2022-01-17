@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_bloc/helper/database_helper/db_helper.dart';
+import 'package:todo_bloc/helper/database_helper/database/task_database.dart';
+import 'package:todo_bloc/helper/database_helper/repository/task_repository.dart';
 import 'package:todo_bloc/model/task.dart';
 import 'package:todo_bloc/providers/theme_providers.dart';
 import 'package:todo_bloc/widgets/my_app_bar.dart';
@@ -127,7 +129,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _colorPallete(),
+                  _colorPalette(),
                   MyButton(
                     label: "Create Task",
                     onTap: _validateFormData,
@@ -144,18 +146,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
   _validateFormData() async {
     if (_titleTextController.text.isNotEmpty &&
         _noteTextController.text.isNotEmpty) {
-      int val = await DBHelper.insert(Task(
-          title: _titleTextController.text,
-          note: _noteTextController.text,
-          isCompleted: 0,
-          date: DateFormat.yMd().format(_selectedDate),
-          startTime: _startTime,
-          endTime: _endTime,
-          color: _selectedColor,
-          reminder: _selectedReminder,
-          repeat: _selectedRepeat));
-      print("Task Added to $val");
-      Navigator.pop(context);
+      int addedTaskId = await RepositoryProvider.of<TaskRepository>(context)
+          .insertTask(Task(
+              title: _titleTextController.text,
+              note: _noteTextController.text,
+              isCompleted: 0,
+              date: DateFormat.yMd().format(_selectedDate),
+              startTime: _startTime,
+              endTime: _endTime,
+              color: _selectedColor,
+              reminder: _selectedReminder,
+              repeat: _selectedRepeat));
+      print("Task Added to $addedTaskId");
+      Navigator.pop(context,true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("All fields are required"),
@@ -163,7 +166,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  Container _colorPallete() {
+  Container _colorPalette() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(

@@ -37,6 +37,8 @@ dependencies:
   google_fonts:
   date_picker_timeline:
   sqflite:
+  path_provider:
+  equatable:
 
 
   # The following adds the Cupertino Icons font to your application.
